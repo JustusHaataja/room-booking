@@ -16,6 +16,17 @@ app.use(express.json());
 // CORS middleware
 app.use(corsMiddleware);
 
+// Request timing middleware
+app.use((req: Request, res: Response, next: NextFunction) => {
+    const start = Date.now();
+    
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        console.log(`${req.method} ${req.path} | Status: ${res.statusCode} | ${duration}ms`);
+    });
+    
+    next();
+});
 
 // ================ HEALTH CHECK ROUTES ================
 
