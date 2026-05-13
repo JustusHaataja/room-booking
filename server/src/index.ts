@@ -22,7 +22,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     
     res.on('finish', () => {
         const duration = Date.now() - start;
-        console.log(`${req.method} ${req.path} | Status: ${res.statusCode} | ${duration}ms`);
+        console.log(`${req.method} ${req.path}  (${duration}ms)`);
     });
     
     next();
@@ -81,7 +81,6 @@ app.listen(PORT, () => {
 ╔═══════════════════════════════════════════════════════╗
 ║  Meeting Room Reservation API                         ║
 ║  Running on http://localhost:${PORT}                     ║
-║  Health check: http://localhost:${PORT}/health           ║
 ╚═══════════════════════════════════════════════════════╝
   `);
 })
