@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { ApiError } from '../services/booking.service';
 
