@@ -1,4 +1,4 @@
-import express, { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { BookingService } from '../services/booking.service';
 import { BookingRepository } from '../repositories/booking.repository';
 import { BookingCreateSchema, BookingResponseSchema } from '../types/booking';
