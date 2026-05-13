@@ -23,7 +23,7 @@ app.use(corsMiddleware);
 *   GET /
 * Root endpoint - API health check 
 */
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (_req: Request, res: Response) => {
     res.status(200).json({
         status: "Online",
         service: "Meeting Room Reservation API",
@@ -36,7 +36,7 @@ app.get("/", (req: Request, res: Response) => {
 *   GET /health
 * Health check endpoint
 */
-app.get("/health", (req: Request, res: Response) => {
+app.get("/health", (_req: Request, res: Response) => {
     res.status(200).json({ status: "healthy" });
 })
 
@@ -50,7 +50,7 @@ app.use("/api", router);
 // ================== ERROR HANDLING ===================
 
 // 404 handler (no route matched)
-app.use((req: Request, res: Response) => {
+app.use((_req: Request, res: Response) => {
     res.status(404).json({
         error: "Not Found",
         status: 404,
@@ -58,7 +58,7 @@ app.use((req: Request, res: Response) => {
 })
 
 // Global error handler
-app.use((err: Error | ZodError | ApiError, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error | ZodError | ApiError, _req: Request, res: Response, _next: NextFunction) => {
     errorHandler(err, res);
 });
 
