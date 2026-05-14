@@ -1,97 +1,141 @@
-import { v4 as uuidv4 } from 'uuid';
-import { Booking, BookingCreate, VALID_ROOM_IDS } from '../types/booking';
+import { supabase } from '../lib/supabase';
+import { Booking, BookingCreate } from '../types/booking';
+import { getRoomById } from './room.repository';
 
-export class BookingRepository {
-    private bookings: Map<string, Booking> = new Map();
+/**
+* Create a new booking
+*/
+export async function createBooking(bookingData: BookingCreate): Promise<Booking> {
+    const { data, error } = await supabase
+        .from('bookings')
+        .insert({
+            room_id: bookingData.room_id,
+            user_name: bookingData.user_name,
+            start_time: bookingData.start_time,
+            end_time: bookingData.end_time,
+        })
+        .select()
+        .single();
 
-    /**
-    * Create a new booking
-    * @param bookingData - The booking data from the request
-    * @returns The created booking with ID and created_at timestamp
-    */
-    create(bookingData: BookingCreate): Booking {
-        const bookingId = uuidv4();
-        const now = new Date().toISOString();
-
-        const booking: Booking = {
-            id: bookingId,
-            ...bookingData,
-            created_at: now,
-        }
-
-        this.bookings.set(bookingId, booking);
-        return booking;
+    if (error) {
+        throw new Error(`Failed to create booking: ${error.message}`);
     }
 
-    /**
-    * Get a booking ID
-    */
-    getByID(bookingId: string): Booking | undefined {
-        return this.bookings.get(bookingId);
+    return data;
+}
+
+/**
+* Get a booking by ID
+*/
+export async function getBookingById(bookingId: string): Promise<Booking | null> {
+    const { data, error } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('id', bookingId)
+        .single();
+
+    if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
+        throw new Error(`Failed to fetch booking: ${error.message}`);
     }
 
-    /**
-    * Get all bookings for a specific room, optionally filtered by time 
-    */
-    getByRoom(roomId: number, fromTime?: Date): Booking[] {
-        const bookings = Array.from(this.bookings.values()).filter(
-            (booking) => booking.room_id === roomId
-        )
+    return data || null;
+}
 
-        if (fromTime) {
-            return bookings.filter(
-                (booking) => new Date(booking.end_time) >= fromTime
-            );
-        }
+/**
+* Get all bookings for a specific room, optionally filtered by time
+*/
+export async function getBookingsByRoom(
+    roomId: number,
+    fromTime?: Date
+): Promise<Booking[]> {
+    let query = supabase
+        .from('bookings')
+        .select('*')
+        .eq('room_id', roomId);
 
-        return bookings.sort(
-            (a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
-        );
+    if (fromTime) {
+        const fromTimeISO = fromTime.toISOString();
+        query = query.gte('end_time', fromTimeISO);
     }
 
-    /**
-    * Find bookings that overlap with the given time range for a specific room
-    * Two bookings overlap if start1 < end2 AND start2 < end1 
-    */
-    getOverlapping(
-        roomId: number,
-        startTime: Date,
-        endTime: Date,
-        excludeBookingId?: string
-    ): Booking[] {
-        return Array.from(this.bookings.values()).filter((booking) => {
-            if (booking.room_id !== roomId) return false;
-            if (excludeBookingId && booking.id === excludeBookingId) return false;
+    const { data, error } = await query.order('start_time', { ascending: true });
 
-            const bookingStart = new Date(booking.start_time);
-            const bookingEnd = new Date(booking.end_time);
-
-            // Overlap check: start1 < end2 AND start2 < end1
-            return bookingStart < endTime && startTime < bookingEnd;
-        });
+    if (error) {
+        throw new Error(`Failed to fetch bookings for room: ${error.message}`);
     }
 
-    /**
-    * Delete booking by ID
-    * @returns true if deleted, false if not found
-    */
-    delete(bookingId: string): boolean {
-        return this.bookings.delete(bookingId);
+    return data || [];
+}
+
+/**
+* Find bookings that overlap with the given time range for a specific room
+* Two bookings overlap if start1 < end2 AND start2 < end1
+*/
+export async function getOverlappingBookings(
+    roomId: number,
+    startTime: string,  // ISO 8601 with timezone
+    endTime: string,    // ISO 8601 with timezone
+    excludeBookingId?: string
+): Promise<Booking[]> {
+    let query = supabase
+        .from('bookings')
+        .select('*')
+        .eq('room_id', roomId)
+        .lt('end_time', endTime)      // end_time is before our end
+        .gt('start_time', startTime); // start_time is after our start
+
+    const { data, error } = await query;
+
+    if (error) {
+        throw new Error(`Failed to fetch overlapping bookings: ${error.message}`);
     }
 
-    /**
-    * Check if a room ID is valid 
-    */
-    isValidRoomId(roomId: number): boolean {
-        return VALID_ROOM_IDS.has(roomId);
+    // Filter out excluded booking if provided
+    const bookings = data || [];
+    if (excludeBookingId) {
+        return bookings.filter(b => b.id !== excludeBookingId);
     }
 
-    /**
-    * Get all bookings
-    */
-    getAll(): Booking[] {
-        return Array.from(this.bookings.values()).sort(
-            (a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
-        )
+    return bookings;
+}
+
+/**
+* Delete a booking by ID
+* @returns true if deleted, false if not found
+*/
+export async function deleteBooking(bookingId: string): Promise<boolean> {
+    const { error } = await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', bookingId);
+
+    if (error) {
+        throw new Error(`Failed to delete booking: ${error.message}`);
     }
+
+    return true;
+}
+
+/**
+* Check if a room ID is valid (room exists in database)
+*/
+export async function isValidRoomId(roomId: number): Promise<boolean> {
+    const room = await getRoomById(roomId);
+    return room !== null;
+}
+
+/**
+* Get all bookings
+*/
+export async function getAllBookings(): Promise<Booking[]> {
+    const { data, error } = await supabase
+        .from('bookings')
+        .select('*')
+        .order('start_time', { ascending: true });
+
+    if (error) {
+        throw new Error(`Failed to fetch all bookings: ${error.message}`);
+    }
+
+    return data || [];
 }
