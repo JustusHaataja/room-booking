@@ -98,7 +98,7 @@ router.post("/rooms", requireAdminKey, async (req: Request, res: Response, next:
 * Delete a room (admin only)
 * Requires X-Admin-Key header
 */
-router.delete("rooms/:room_id", requireAdminKey, async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/rooms/:room_id", requireAdminKey, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const roomId = parseInt(req.params.room_id, 10);
 
