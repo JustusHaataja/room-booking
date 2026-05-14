@@ -1,7 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { corsMiddleware } from './middleware/cors';
 import { errorHandler } from './middleware/errorHandler';
-import router from './routes/bookings';
+import bookingRouter from './routes/bookings';
+import roomsRouter from './routes/rooms';
 import { ApiError } from './services/booking.service';
 import { ZodError } from 'zod';
 
@@ -55,7 +56,10 @@ app.get("/health", (_req: Request, res: Response) => {
 // ==================== API ROUTES =====================
 
 // Register bookings router with /api prefix
-app.use("/api", router);
+app.use("/api", bookingRouter);
+
+// Register rooms router with /api prefix
+app.use("/api", roomsRouter);
 
 
 // ================== ERROR HANDLING ===================
