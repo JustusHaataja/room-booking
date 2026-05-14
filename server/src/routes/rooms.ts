@@ -8,7 +8,7 @@ const router = Router();
 * Middleware: Check admin API key
 * All room admin endpoints require the X-Admin-Key header
 */
-function requireAdminKey(req: Request, res: Response, next: NextFunction): void {
+function requireAdminKey(req: Request, _res: Response, next: NextFunction): void {
     const providedKey = req.headers["x-admin-key"] as string;
     const correctKey = process.env.ADMIN_API_KEY;
 
@@ -25,7 +25,7 @@ function requireAdminKey(req: Request, res: Response, next: NextFunction): void 
 * GET /api/rooms
 * List all rooms (public - no auth required)
 */
-router.get("/rooms", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/rooms", async (_req: Request, res: Response, next: NextFunction) => {
     try {
         const rooms = await roomRepository.getAllRooms();
         res.status(200).json(rooms);
