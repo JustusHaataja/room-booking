@@ -1,0 +1,110 @@
+.rooms-page {
+  padding: var(--spacing-xl) 0;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.rooms-page__title {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-dark);
+}
+
+.rooms-page__empty {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.rooms-page__empty-text {
+  color: var(--color-gray);
+  font-size: var(--font-size-lg);
+}
+
+/* Room Card */
+.room-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.2s ease;
+}
+
+.room-card:hover {
+  transform: translateY(-4px);
+}
+
+.room-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.room-card__name {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-dark);
+}
+
+.room-card__capacity {
+  background-color: var(--color-light-gray);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+}
+
+.room-card__description {
+  color: var(--color-gray);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-base);
+  flex-grow: 1;
+}
+
+.room-card__info {
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-light-gray);
+}
+
+.room-card__price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-card__price-label {
+  color: var(--color-gray);
+  font-size: var(--font-size-base);
+}
+
+.room-card__price-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.room-card__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: auto;
+}
+
+.room-card__btn {
+  flex: 1;
+  min-height: 40px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .rooms-page {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .room-card__header {
+    flex-direction: column;
+  }
+
+  .room-card__capacity {
+    align-self: flex-start;
+  }
+}
