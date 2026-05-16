@@ -1,0 +1,16 @@
+.card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+}
+
+.card--elevated {
+  box-shadow: var(--shadow-md);
+  border: none;
+}
+
+.card--elevated:hover {
+  box-shadow: var(--shadow-lg);
+  transition: box-shadow 0.2s ease;
+}

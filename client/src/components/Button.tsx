@@ -1,12 +1,12 @@
 import React from 'react';
-import './Button.css';
+import '../styles/Button.css';
 
 interface ButtonProps {
     children: React.ReactNode;
     variant?: "primary" | "danger" | "secondary";
     disabled?: boolean;
     onClick?: () => void;
-    classname?: string;
+    className?: string;
     type?: "button" | "submit" | "reset";
 }
 
@@ -15,12 +15,12 @@ export const Button: React.FC<ButtonProps> = ({
     variant = "primary",
     disabled = false,
     onClick,
-    classname = "",
+    className = "",
     type = "button",
 }) => {
     const baseClass = "btn";
     const variantClass = `btn--${variant}`;
-    const allClasses = `${baseClass} ${variantClass} ${classname}`.trim();
+    const allClasses = `${baseClass} ${variantClass} ${className}`.trim();
 
     return (
         <button
