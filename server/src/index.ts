@@ -40,7 +40,6 @@ app.get("/", (_req: Request, res: Response) => {
         status: "Online",
         service: "Meeting Room Reservation API",
         version: "1.0.0",
-        docs: "/docs",
     });
 })
 
