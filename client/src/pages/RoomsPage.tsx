@@ -79,7 +79,7 @@ export const RoomsPage: React.FC<RoomsPageProps> = ({
                   <div className="room-card__price">
                     <span className="room-card__price-label">Price:</span>
                     <span className="room-card__price-value">
-                      €{room.price.toFixed(2)}/hour
+                      €{room.price.toFixed(2)}/h
                     </span>
                   </div>
                 </div>

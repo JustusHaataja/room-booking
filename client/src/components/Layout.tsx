@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import roomlyLogo from '../assets/Roomly2.png';
 import '../styles/Layout.css';
 
 interface LayoutProps {
@@ -20,7 +21,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="container">
           <div className="header__content">
             <Link to="/" className="header__logo">
-              
+              <img src={roomlyLogo} alt="Roomly Logo" className="header__logo-img" />
             </Link>
 
             <nav className="header__nav">
