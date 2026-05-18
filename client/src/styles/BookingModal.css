@@ -1,0 +1,106 @@
+.booking-modal {
+  max-width: 450px;
+}
+
+.booking-modal__content {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Success State */
+.booking-modal__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  text-align: center;
+}
+
+.booking-modal__success-icon {
+  font-size: 48px;
+  color: var(--color-success);
+  margin-bottom: var(--spacing-md);
+}
+
+.booking-modal__success-title {
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-success);
+  font-size: var(--font-size-lg);
+}
+
+.booking-modal__success-message {
+  color: var(--color-gray);
+  margin: 0;
+}
+
+/* Booking Summary */
+.booking-modal__summary {
+  background-color: var(--color-light-gray);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-sm) 0;
+  font-size: var(--font-size-base);
+}
+
+.summary-item:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+}
+
+.summary-item__label {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray);
+}
+
+.summary-item__value {
+  color: var(--color-dark);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Actions */
+.booking-modal__actions {
+  margin-top: auto;
+  margin-bottom: var(--spacing-md);
+}
+
+.booking-modal__submit {
+  width: 100%;
+  padding: var(--spacing-md);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-family);
+}
+
+.booking-modal__submit:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.booking-modal__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Helper Text */
+.booking-modal__helper {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+  margin: 0;
+}
