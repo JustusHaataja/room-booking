@@ -1,7 +1,7 @@
 /* Color Palette */
 :root {
-  --color-primary: #3498db;      /* Blue */
-  --color-primary-dark: #2980b9;
+  --color-primary: #D9E7FE;      /* Blue #3498db */
+  --color-primary-dark: #1E264C;  /* #2980b9 */
   --color-secondary: #2ecc71;    /* Green */
   --color-danger: #e74c3c;       /* Red */
   --color-warning: #f39c12;      /* Orange */
