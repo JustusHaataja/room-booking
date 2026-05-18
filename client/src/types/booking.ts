@@ -11,7 +11,7 @@ export interface Booking extends BookingCreate {
 }
 
 export interface BookingResponse {
-    id: number;
+    id: string; // UUID
     room_id: number;
     start_time: string;
     end_time: string;
