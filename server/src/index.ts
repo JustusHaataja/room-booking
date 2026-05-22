@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { corsMiddleware } from './middleware/cors';
+import { rateLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/errorHandler';
 import bookingRouter from './routes/bookings';
 import roomsRouter from './routes/rooms';
@@ -16,6 +17,7 @@ app.use(express.json());
 
 // CORS middleware
 app.use(corsMiddleware);
+app.use(rateLimiter);
 
 // Request timing middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
