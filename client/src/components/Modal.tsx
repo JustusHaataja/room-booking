@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/Modal.css';
+import { IoClose } from 'react-icons/io5';
 import { Button } from './Button';
 
 interface ModalProps {
@@ -34,7 +35,7 @@ export const Modal: React.FC<ModalProps> = ({
         <div className="modal__header">
           <h2 className="modal__title">{title}</h2>
           <button className="modal__close" onClick={onClose}>
-            x
+            <IoClose size={24} />
           </button>
         </div>
 

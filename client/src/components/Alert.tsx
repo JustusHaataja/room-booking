@@ -1,4 +1,5 @@
 import React from 'react';
+import { IoClose } from 'react-icons/io5';
 import '../styles/Alert.css';
 
 interface AlertProps {
@@ -31,7 +32,7 @@ export const Alert: React.FC<AlertProps> = ({
           onClick={onClose}
           aria-label="Close alert"
         >
-          x
+          <IoClose size={24} />
         </button>
       )}
     </div>

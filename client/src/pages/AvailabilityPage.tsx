@@ -111,14 +111,17 @@ export const AvailabilityPage: React.FC<AvailabilityPageProps> = ({
 
     try {
       setIsSubmitting(true);
-      // Call your booking API here
+      
+      // Simple ISO 8601 format with UTC timezone
+      const startTime = `${selectedDate}T${selectedSlots[0]}:00Z`;
+      const endTime = `${selectedDate}T${selectedSlots[1]}:00Z`;
+      console.log(startTime, endTime)
+
       const bookingData = {
         roomId,
-        startTime: `${selectedDate}T${selectedSlots[0]}:00`,
-        endTime: `${selectedDate}T${selectedSlots[1]}:00`,
+        startTime,
+        endTime,    
       }
-
-      // await createBooking(bookingData);
 
       onBookingSuccess?.(bookingData);
     } catch (err) {
