@@ -18,8 +18,8 @@ interface ErrorResponse {
 export const errorHandler = (
     err: Error | ZodError | ApiError,
     res: Response,
-    // req: Request,
-    // next: NextFunction,
+    _req: Request,
+    _next: NextFunction,
 ) => {
     let statusCode = 500;
     let message = "Internal Server Error";
