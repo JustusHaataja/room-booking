@@ -17,8 +17,8 @@ interface ErrorResponse {
 */
 export const errorHandler = (
     err: Error | ZodError | ApiError,
-    res: Response,
     _req: Request,
+    res: Response,
     _next: NextFunction,
 ) => {
     let statusCode = 500;

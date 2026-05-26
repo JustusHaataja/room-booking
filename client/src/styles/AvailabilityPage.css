@@ -94,6 +94,104 @@
   min-height: 40px;
 }
 
+.availability-page__date-input {
+  padding: var(--spacing-md) var(--spacing-md);
+  font-size: var(--font-size-base);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-family);
+  cursor: pointer;
+  background-color: var(--color-white);
+  color: var(--color-dark);
+  transition: all 0.2s ease;
+  min-width: 200px;
+}
+
+.availability-page__date-input:hover {
+  border-color: var(--color-primary);
+}
+
+.availability-page__date-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+}
+
+/* Date input calendar icon styling */
+.availability-page__date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  padding: 4px 8px;
+}
+
+.time-slot {
+  padding: var(--spacing-md);
+  border: 2px solid transparent;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-family);
+  background-color: var(--color-white);
+  position: relative;
+}
+
+/* Available slots - Green */
+.time-slot--available {
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  border: 2px solid #27ae60;
+}
+
+.time-slot--available:hover:not(.time-slot--in-range) {
+  transform: scale(1.08);
+  box-shadow: var(--shadow-md);
+  background-color: #229954;
+}
+
+/* Booked slots - Red with pattern */
+.time-slot--booked {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-danger),
+    var(--color-danger) 10px,
+    #c0392b 10px,
+    #c0392b 20px
+  );
+  color: var(--color-white);
+  cursor: not-allowed;
+  opacity: 0.7;
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+}
+
+.time-slot--booked:hover {
+  transform: none;
+}
+
+/* Selected start/end slots - Blue */
+.time-slot--selected {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: 2px solid var(--color-primary-dark);
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.3);
+  font-weight: 700;
+}
+
+/* Slots in the selected range - Light blue background */
+.time-slot--in-range {
+  background-color: rgba(52, 152, 219, 0.2);
+  color: var(--color-dark);
+  border: 2px solid var(--color-primary);
+}
+
+.time-slot--in-range.time-slot--selected {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .rooms-page {

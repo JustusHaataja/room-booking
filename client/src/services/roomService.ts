@@ -22,17 +22,16 @@ export const getRooms = async (): Promise<Room[]> => {
 */
 export const getRoomBookings = async (
     roomId: number,
-    fromNow: boolean = false,
+    // fromNow: boolean = false,
 ): Promise<BookingResponse[]> => {
     try {
-        const params = fromNow ? { fromNow: "true" } : {};
+        // const params = fromNow ? { fromNow: "true" } : {};
         const response = await apiClient.get<BookingResponse[]>(
-            `/rooms/${roomId}/bookings`,
-            { params }
-        );
+            `/rooms/${roomId}/bookings`
+        ); //, { params }
         return response.data;
     } catch (error) {
-        console.error(`Failed to fetch bookings for room ${roomId}:`, error);
+        console.error(`Client: Failed to fetch bookings for room ${roomId}:`, error);
         throw error;
     }
 }

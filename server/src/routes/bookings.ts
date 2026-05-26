@@ -51,6 +51,7 @@ router.get("/rooms/:room_id/bookings", async (req: Request, res: Response, next:
         
         res.status(200).json(validatedBookings);
     } catch (error) {
+        console.log(error)
         next(error);
     }
 })

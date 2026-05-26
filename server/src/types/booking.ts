@@ -3,8 +3,8 @@ import { z } from 'zod';
 // Validation schema for creating a booking (request body)
 export const BookingCreateSchema = z.object({
     room_id: z.number().int().min(1).max(10).describe("Room ID (1-10)"),
-    start_time: z.string().datetime().describe("Start time in ISO 8601 format with timezone"),
-    end_time: z.string().datetime().describe("End time in ISO 8601 format with timezone"),
+    start_time: z.string().datetime({ offset: true }).describe("Start time in ISO 8601 format with timezone"),
+    end_time: z.string().datetime({ offset: true }).describe("End time in ISO 8601 format with timezone"),
     user_name: z
         .string()
         .min(1, "user_name is required and cannot be empty")
@@ -17,10 +17,10 @@ export const BookingCreateSchema = z.object({
 export const BookingResponseSchema = z.object({
     id: z.string().uuid().describe("Unique booking ID"),
     room_id: z.number().int(),
-    start_time: z.string().datetime(),
-    end_time: z.string().datetime(),
+    start_time: z.string().datetime({ offset: true }),
+    end_time: z.string().datetime({ offset: true }),
     user_name: z.string(),
-    created_at: z.string().datetime().describe("When the booking was created"),
+    created_at: z.string().datetime({ offset: true }).describe("When the booking was created"),
 })
 
 // Infer TypeScript types from schemas (automatically generated)

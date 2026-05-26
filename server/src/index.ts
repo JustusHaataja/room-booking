@@ -75,7 +75,7 @@ app.use((_req: Request, res: Response) => {
 
 // Global error handler
 app.use((err: Error | ZodError | ApiError, _req: Request, res: Response, _next: NextFunction) => {
-    errorHandler(err, res);
+    errorHandler(err, _req, res, _next);
 });
 
 

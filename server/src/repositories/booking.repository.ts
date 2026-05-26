@@ -3,6 +3,43 @@ import { Booking, BookingCreate } from '../types/booking';
 import { getRoomById } from './room.repository';
 
 /**
+* Helper function to ensure ISO strings have timezone designator
+* Supabase returns dates without timezone, but Zod validator requires it
+* Also normalizes fractional seconds to 3 digits for consistent validation
+*/
+function ensureTimezone(dateStr: string): string {
+    if (!dateStr) return dateStr;
+    
+    // If it already has a timezone designator, return as-is
+    if (/[Zz]$/.test(dateStr) || /[+-]\d{2}:\d{2}$/.test(dateStr)) {
+        return dateStr;
+    }
+    
+    // Normalize fractional seconds: truncate to 3 digits (milliseconds)
+    // Supabase might return 6 digits (microseconds), but Zod expects 0-3
+    const withoutTz = dateStr.replace(/(\.\d{4,})/, (match) => {
+        // Keep only first 4 chars (dot + 3 digits)
+        return match.substring(0, 4);
+    });
+    
+    // Append Z for UTC (Supabase stores in UTC by default)
+    return withoutTz + 'Z';
+}
+
+/**
+* Transform booking data to include timezone info on all date fields
+*/
+function formatBooking(booking: any): Booking {
+    if (!booking) return booking;
+    return {
+        ...booking,
+        start_time: ensureTimezone(booking.start_time),
+        end_time: ensureTimezone(booking.end_time),
+        created_at: ensureTimezone(booking.created_at),
+    };
+}
+
+/**
 * Create a new booking
 */
 export async function createBooking(bookingData: BookingCreate): Promise<Booking> {
@@ -21,7 +58,7 @@ export async function createBooking(bookingData: BookingCreate): Promise<Booking
         throw new Error(`Failed to create booking: ${error.message}`);
     }
 
-    return data;
+    return formatBooking(data);
 }
 
 /**
@@ -38,7 +75,7 @@ export async function getBookingById(bookingId: string): Promise<Booking | null>
         throw new Error(`Failed to fetch booking: ${error.message}`);
     }
 
-    return data || null;
+    return data ? formatBooking(data) : null;
 }
 
 /**
@@ -64,7 +101,7 @@ export async function getBookingsByRoom(
         throw new Error(`Failed to fetch bookings for room: ${error.message}`);
     }
 
-    return data || [];
+    return (data || []).map(formatBooking);
 }
 
 /**
@@ -91,7 +128,7 @@ export async function getOverlappingBookings(
     }
 
     // Filter out excluded booking if provided
-    const bookings = data || [];
+    const bookings = (data || []).map(formatBooking);
     if (excludeBookingId) {
         return bookings.filter(b => b.id !== excludeBookingId);
     }
@@ -137,5 +174,5 @@ export async function getAllBookings(): Promise<Booking[]> {
         throw new Error(`Failed to fetch all bookings: ${error.message}`);
     }
 
-    return data || [];
+    return (data || []).map(formatBooking);
 }

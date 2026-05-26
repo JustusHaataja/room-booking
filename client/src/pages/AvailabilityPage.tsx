@@ -48,7 +48,7 @@ export const AvailabilityPage: React.FC<AvailabilityPageProps> = ({
       try {
         setLoading(true);
         setError(null);
-        const data = await getRoomBookings(roomId, false);
+        const data = await getRoomBookings(roomId);  // false
         setBookings(data);
       } catch (err) {
         const errorMessage =
@@ -105,6 +105,22 @@ export const AvailabilityPage: React.FC<AvailabilityPageProps> = ({
   }
 
   const isSlotSelected = (time: string) => selectedSlots.includes(time);
+
+  // Check if a slot is within the selected range
+  const isInSelectedRange = (time: string): boolean => {
+    if (selectedSlots.length < 2) return false;
+    
+    const [start, end] = selectedSlots;
+    const slotTime = time.split(':').map(Number);
+    const startTime = start.split(':').map(Number);
+    const endTime = end.split(':').map(Number);
+    
+    const slotMinutes = slotTime[0] * 60 + slotTime[1];
+    const startMinutes = startTime[0] * 60 + startTime[1];
+    const endMinutes = endTime[0] * 60 + endTime[1];
+    
+    return slotMinutes >= startMinutes && slotMinutes < endMinutes;
+  };
 
   const handleContinueToBooking = async () => {
     if (selectedSlots.length !== 2) return;
@@ -209,7 +225,9 @@ export const AvailabilityPage: React.FC<AvailabilityPageProps> = ({
                   slot.isBooked
                     ? "time-slot--booked"
                     : "time-slot--available"
-                } ${isSlotSelected(slot.time) ? "time-slot--selected" : ""}`}
+                } ${isSlotSelected(slot.time) ? "time-slot--selected" : ""} ${
+                  isInSelectedRange(slot.time) ? "time-slot--in-range" : ""
+                }`}
                 onClick={() => !slot.isBooked && handleSlotClick(slot.time)}
                 disabled={slot.isBooked}
                 title={
