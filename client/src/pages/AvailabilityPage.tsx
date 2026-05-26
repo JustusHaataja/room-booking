@@ -78,7 +78,9 @@ export const AvailabilityPage: React.FC<AvailabilityPageProps> = ({
         const booking = bookings.find((b) => {
           const bookingStart = new Date(b.start_time);
           const bookingEnd = new Date(b.end_time);
-          return slotDateTime >= bookingStart && slotDateTime < bookingEnd;
+          // Only mark as booked if strictly within the booking interval
+          // This allows adjacent bookings (16:30-17:00 and 17:00-17:30)
+          return slotDateTime > bookingStart && slotDateTime < bookingEnd
         });
 
         slots.push({

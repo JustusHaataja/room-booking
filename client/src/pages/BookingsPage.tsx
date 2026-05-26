@@ -87,7 +87,7 @@ export const BookingsPage: React.FC<BookingsPageProps> = ({ onClose }) => {
   // Format time for display
   const formatTime = (isoString: string): string => {
     const date = new Date(isoString);
-    return date.toLocaleString("en-US", {
+    return date.toLocaleString("fi-FI", {
       month: "short",
       day: "numeric",
       year: "numeric",
