@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createBooking } from '../services/bookingService';
+import { formatTime } from '../utils/timeUtils';
 import { type BookingCreate } from '../types/booking';
 import { Modal } from './Modal';
 import { FormField } from './FormField';
@@ -29,17 +30,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-
-  // Format time for display
-  const formatTime = (isoString: string): string => {
-    const date = new Date(isoString);
-    return date.toLocaleString("fi-FI", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  }
 
   // Validate user name
   const validateUserName = (name: string): string | null => {

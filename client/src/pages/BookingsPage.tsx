@@ -3,6 +3,7 @@ import { type BookingResponse } from '../types/booking';
 import { type Room } from '../types/room';
 import { getAllBookings, cancelBooking } from '../services/bookingService';
 import { getRooms } from '../services/roomService';
+import { formatTime, calculateDuration } from '../utils/timeUtils';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { Loader } from '../components/Loader';
@@ -82,26 +83,6 @@ export const BookingsPage: React.FC<BookingsPageProps> = ({ onClose }) => {
       default:
         return bookings;
     }
-  }
-
-  // Format time for display
-  const formatTime = (isoString: string): string => {
-    const date = new Date(isoString);
-    return date.toLocaleString("fi-FI", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  }
-
-  // Calculate duration in hours
-  const calculateDuration = (startTime: string, endTime: string): string => {
-    const start = new Date(startTime);
-    const end = new Date(endTime);
-    const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-    return hours.toFixed(1);
   }
 
   // Handle booking cancellation
@@ -246,7 +227,7 @@ export const BookingsPage: React.FC<BookingsPageProps> = ({ onClose }) => {
                     </div>
                     <div className="detail-item">
                       <span className="detail-item__label">Duration:</span>
-                      <span className="detail-item__value">{duration}h</span>
+                      <span className="detail-item__value">{duration}</span>
                     </div>
                   </div>
 
