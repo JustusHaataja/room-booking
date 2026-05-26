@@ -33,7 +33,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   // Format time for display
   const formatTime = (isoString: string): string => {
     const date = new Date(isoString);
-    return date.toLocaleString("en-US", {
+    return date.toLocaleString("fi-FI", {
       month: "short",
       day: "numeric",
       hour: "2-digit",

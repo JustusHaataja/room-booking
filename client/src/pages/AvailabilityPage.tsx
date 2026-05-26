@@ -128,10 +128,18 @@ export const AvailabilityPage: React.FC<AvailabilityPageProps> = ({
     try {
       setIsSubmitting(true);
       
-      // Simple ISO 8601 format with UTC timezone
-      const startTime = `${selectedDate}T${selectedSlots[0]}:00Z`;
-      const endTime = `${selectedDate}T${selectedSlots[1]}:00Z`;
-      console.log(startTime, endTime)
+      // Get user's timezone offset and format as ISO 8601 with offset
+      const now = new Date();
+      const offset = -now.getTimezoneOffset();
+      const sign = offset >= 0 ? '+' : '-';
+      const absOffset = Math.abs(offset);
+      const hours = String(Math.floor(absOffset / 60)).padStart(2, '0');
+      const minutes = String(absOffset % 60).padStart(2, '0');
+      const tzOffset = `${sign}${hours}:${minutes}`;
+      
+      // Build ISO 8601 datetime with timezone offset (not UTC)
+      const startTime = `${selectedDate}T${selectedSlots[0]}:00${tzOffset}`;
+      const endTime = `${selectedDate}T${selectedSlots[1]}:00${tzOffset}`;
 
       const bookingData = {
         roomId,
